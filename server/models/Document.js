@@ -22,7 +22,11 @@ const documentSchema = new mongoose.Schema({
     type: Array, // Store the user IDs of collaborators
     required: true,
     default: [],
-  }
+  },
+  creator: {
+    type: String,
+    required: true,
+  },
 }, { timestamps: true }); // Add timestamps to track when the document is created or updated
 
 const Document = mongoose.model('Document', documentSchema);

@@ -4,6 +4,8 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import Card from "../components/Card.jsx";
 import { useSpring, animated } from "@react-spring/web";
 import { useTrail, animated as a } from "@react-spring/web";
+import useStore  from "../../zustand/store.js";  
+import { logEvent } from "firebase/analytics";
 
 const style = {
   position: "absolute",
@@ -46,6 +48,10 @@ const projects = [
 ];
 
 const Home = () => {
+  
+  const { userData, setUserData } = useStore();
+  const email = userData.email;
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -62,16 +68,18 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await fetch("http://localhost:3000/api", {
+    const res = await fetch("http://localhost:3000/api/document/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, description }),
+      body: JSON.stringify({ title, description, creator: email, lastUpdated: new Date().toISOString(), collaborators: [email] }),
     });
 
     const data = await res.json();
-    Navigate(`/project/${data.id}`);
+    console.log(data);
+    
+    Navigate(`/project/${data._id}`);
   };
 
   // Animation for modal (scale-in when opened)

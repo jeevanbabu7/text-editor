@@ -4,18 +4,33 @@ import { Server } from 'socket.io';
 import cors from 'cors'; // Import CORS
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { create } from 'domain';
 import DocumentManager from './DocumentManager.js';
 import DocumentRouter from './Route/Document.route.js';
+import authRouter from './Route/AuthRouter.js';
+// import cookieParser from 'cookie-parser';
 dotenv.config();
 
 // app initialization
 const app = express();
-app.use('api/document/', DocumentRouter);
+app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173', 
   methods: ['GET', 'POST'],
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  allowedHeaders: ['Content-Type', 'Authorization'], // Add any additional headers you need
 }));
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin'); // Allows same-origin windows to access each other
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Restricts embedded content to same-origin or CORS
+  next();
+});
+
+// app.use(cookieParser()) 
+
+app.use('/api/document/', DocumentRouter);
+app.use('/api/auth/', authRouter);
+
 
 const server = createServer(app);
 const io = new Server(server, {

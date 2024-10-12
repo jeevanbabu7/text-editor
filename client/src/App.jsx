@@ -1,13 +1,19 @@
 import './App.css';
 import Home from './pages/Home.jsx';
-import TextEditor from './pages/TextEditor';  
+import Landing from './pages/Landing.jsx';
+import TextEditor from './pages/TextEditor.jsx';  
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-function App() {
+
+
+
+function App() {  
+  
   return (
 
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/project/:id" element={<TextEditor />} />
       </Routes>
     </Router>
