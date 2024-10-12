@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import Card from "../components/Card.jsx";
 import { useSpring, animated } from "@react-spring/web";
@@ -58,6 +58,7 @@ const Home = () => {
 
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const navigate = useNavigate();
   
   const handleChange = (event) => {
     if (event.target.label === "Project Name") {
@@ -68,7 +69,7 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await fetch("http://localhost:3000/api/document/create", {
+    const res = await fetch("http://localhost:3001/api/document/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +80,7 @@ const Home = () => {
     const data = await res.json();
     console.log(data);
     
-    Navigate(`/project/${data._id}`);
+    navigate(`/project/${data._id}`);
   };
 
   // Animation for modal (scale-in when opened)

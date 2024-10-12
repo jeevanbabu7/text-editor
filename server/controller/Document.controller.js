@@ -2,6 +2,8 @@ import Document from "../models/Document.js";
 
 export const createDocument = async (req, res) => {
     try {
+        console.log("hiiiiiiii");
+        
         const newDocument = new Document(req.body);
         await newDocument.save();
         res.status(201).json(newDocument);

@@ -8,7 +8,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA7LUPyJTWp7ywfDwaayJbQQU5h8ZzZDzE",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "text-editor-56e8c.firebaseapp.com",
   projectId: "text-editor-56e8c",
   storageBucket: "text-editor-56e8c.appspot.com",
@@ -26,3 +26,4 @@ export default app;
 // firebase login
 // firebase init
 // firebase deploy
+
