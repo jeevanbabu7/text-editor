@@ -65,11 +65,24 @@ io.on('connection', (socket) => {
     socket.emit("serverResponse",res);
   });
 
-  socket.on('send-changes', (delta) => {
-    socket.broadcast.emit('receive-changes', delta);
-    console.log('Received delta:', delta);
+  // socket.on('send-changes', (delta) => {
+  //   socket.broadcast.emit('receive-changes', delta);
+  //   console.log('Received delta:', delta);
+  // });
+
+  socket.on('add-collaborator', (data) => {
+    const res = Documents.addCollaborator(data);
+    socket.emit("serverResponse",res);
   });
 
+  socket.on('join-document', (docId) => {
+    socket.join(docId);
+    console.log(`User ${socket.id} joined document ${docId}`);
+  });
+
+  socket.on('send-changes', (docId, delta) => {
+    socket.to(docId).emit('receive-changes', delta);
+  });
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });

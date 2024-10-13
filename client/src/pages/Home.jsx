@@ -146,12 +146,14 @@ const Home = () => {
                 id="outlined-basic"
                 name="title"
                 variant="outlined"
+                label="Title"
                 onChange={handleChange}
               />
               <TextField
                 id="outlined-basic"
                 name="description"
                 variant="outlined"
+                label="Description"
                 onChange={handleChange}
               />
               <Button variant="contained" onClick={handleSubmit}>

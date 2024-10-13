@@ -18,11 +18,10 @@ const documentSchema = new mongoose.Schema({
     required: true,
     default: { }
   },
-  collaborators: {
-    type: Array, // Store the user IDs of collaborators
-    required: true,
-    default: [],
-  },
+  collaborators:  [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+    }],
   creator: {
     type: String,
     required: true,

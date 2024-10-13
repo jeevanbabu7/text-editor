@@ -69,6 +69,22 @@ class DocumentManager {
         return deleteDoc(data);
     }
 
+    addCollaborator(data) {
+        const addCollab = async (data) => {
+            const response = await fetch('http://localhost:3001/api/document/addCollaborator', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const document = await response.json();
+            return document;
+        }
+        return addCollab(data);
+    }
+
     get(name) {
 
     }
