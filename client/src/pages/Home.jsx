@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import Card from "../components/Card.jsx";
 import { useSpring, animated } from "@react-spring/web";
 import { useTrail, animated as a } from "@react-spring/web";
 import useStore  from "../../zustand/store.js";  
-import { logEvent } from "firebase/analytics";
+import io from 'socket.io-client';
 
 const style = {
   position: "absolute",
@@ -20,37 +20,12 @@ const style = {
   p: 4,
 };
 
-const projects = [
-  {
-    id: 1,
-    title: "Project Alpha",
-    description: "Collaborative text editor for team projects.",
-    lastUpdated: "2024-10-01",
-  },
-  {
-    id: 2,
-    title: "Project Beta",
-    description: "Markdown editor with live preview.",
-    lastUpdated: "2024-09-25",
-  },
-  {
-    id: 3,
-    title: "Project Gamma",
-    description: "Simple text editor with rich text features.",
-    lastUpdated: "2024-09-15",
-  },
-  {
-    id: 4,
-    title: "Project Delta",
-    description: "Notes application for quick jotting down ideas.",
-    lastUpdated: "2024-08-30",
-  },
-];
 
 const Home = () => {
   
   const { userData, setUserData } = useStore();
   const email = userData.email;
+  const [projects, setProjects] = React.useState([]);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -59,9 +34,19 @@ const Home = () => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const navigate = useNavigate();
+  const [socket, setSocket] = React.useState();
   
+  useEffect(() => {
+    const s = io('http://localhost:3001'); // Connect to backend server
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, []);
+
   const handleChange = (event) => {
-    if (event.target.label === "Project Name") {
+    if (event.target.name == "title") {
       setTitle(event.target.value);
     } else {
       setDescription(event.target.value);
@@ -69,19 +54,43 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await fetch("http://localhost:3001/api/document/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    socket.emit('new-document', {
+      title: title,
+      description: description,
+      creator: email,
+      content: {
+        msg: 'Welcome to the collaborative text editor!'
       },
-      body: JSON.stringify({ title, description, creator: email, lastUpdated: new Date().toISOString(), collaborators: [email] }),
+      collaborators: [userData._id],
     });
-
-    const data = await res.json();
-    console.log(data);
-    
-    navigate(`/project/${data._id}`);
   };
+
+  useEffect(() => {
+    // Listen for a response from the server
+    if(!socket) return;
+    socket.on('serverResponse', (data) => {
+      console.log('Server response:', data);
+      const id = data._id;
+      navigate(`/project/${id}`);
+   
+    });    
+    
+    return () => {
+      socket.off('serverResponse');
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`http://localhost:3001/api/document/get/${userData._id}`);
+      const data = await response.json();
+      console.log(data);
+      
+      setProjects(data);
+    }
+
+    fetchData();
+  }, []);
 
   // Animation for modal (scale-in when opened)
   const modalAnimation = useSpring({
@@ -135,13 +144,13 @@ const Home = () => {
             >
               <TextField
                 id="outlined-basic"
-                label="Project Name"
+                name="title"
                 variant="outlined"
                 onChange={handleChange}
               />
               <TextField
                 id="outlined-basic"
-                label="Description"
+                name="description"
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -154,9 +163,9 @@ const Home = () => {
 
         {/* Project Cards with animation */}
         {trail.map((props, index) => (
-          <a.div style={props} key={index}>
-            <Card project={projects[index]} />
-          </a.div>
+            <a.div style={props} key={index}>
+              <Card project={projects[index]} />
+            </a.div>
         ))}
       </div>
     </div>

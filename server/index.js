@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   allowedHeaders: ['Content-Type', 'Authorization'], // Add any additional headers you need
 }));
@@ -36,7 +36,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173', 
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   }
 });
 
@@ -49,8 +49,10 @@ const Documents = new DocumentManager();
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('new-document', (data) => {
-    const res = Documents.createDocument(data);
+  socket.on('new-document', async (data) => {
+    const res = await Documents.createDocument(data);
+    socket.emit("serverResponse",res);
+
   });
 
   socket.on('update-document', (data) => {

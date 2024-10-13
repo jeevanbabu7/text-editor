@@ -1,22 +1,24 @@
 class DocumentManager {
 
     constructor() {
-        this.activeDocument = [];
+        this.activeDocuments = [];
         this.activeUsers = [];
     }
 
     createDocument(data) {
         const createNewDocument = async (data) => {
+            console.log(data);
+            
             const newDocument = {
-                id: data.id,
                 title: data.title,
                 description: data.description,
+                creator: data.creator,
                 lastUpdated: new Date().toISOString(),
-                content: {},
-                collaborators: [data.userId]
+                content: data.content,
+                collaborators: data.collaborators
             };
     
-            const response = await fetch('http://localhost:3001/api', {
+            const response = await fetch('http://localhost:3001/api/document/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,7 +27,8 @@ class DocumentManager {
             });
 
             const document = await response.json();
-            this.activeDocument.push(document);
+            this.activeDocuments.push(document);
+            // console.log(this.activeDocuments);
             return document;
         }
 
@@ -34,7 +37,7 @@ class DocumentManager {
 
     updateDocument(data) {
         const updateDoc = async (data) => {
-            const response = await fetch(`http://localhost:3001/api/${data.id}`, {
+            const response = await fetch(`http://localhost:3001/api/document/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
