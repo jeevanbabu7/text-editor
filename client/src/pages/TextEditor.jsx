@@ -35,14 +35,8 @@ const TextEditor = () => {
     const userId = userData._id;
     const data = {title, description, content, id, userId};
     
-    const response = await fetch('http://localhost:3001/api/document/update', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
+    socket.emit('update-document', data);
+    
     const res = await response.json();
     console.log(res);
   };

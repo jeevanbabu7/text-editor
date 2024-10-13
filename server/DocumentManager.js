@@ -37,13 +37,13 @@ class DocumentManager {
 
     updateDocument(data) {
         const updateDoc = async (data) => {
-            const response = await fetch(`http://localhost:3001/api/document/update`, {
+            const response = await fetch('http://localhost:3001/api/document/update', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
-            });
+                body: JSON.stringify(data),
+              });
 
             const document = await response.json();
             return document;

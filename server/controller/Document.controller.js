@@ -61,3 +61,16 @@ export const getDocumentData = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+
+export const deleteDocument = async (req, res) => {
+    
+    const { id } = req.params;
+    const userEmail = req.body.email;    
+
+    const doc = await Document.findById(id);
+    if(!doc) return res.status(404).send(`No document with id: ${id}`);
+    if(doc.creator !== userEmail) return res.status(401).send('You are not the creator of this document');
+
+    await Document.findByIdAndDelete(id);
+    return res.status(200).send(JSON.stringify({message: 'Document deleted successfully'}));
+}
