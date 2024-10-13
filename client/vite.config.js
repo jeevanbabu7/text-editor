@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'text-editor-indol-seven.vercel.app',
         secure: false,
       },
     },
