@@ -62,6 +62,7 @@ io.on('connection', (socket) => {
 
   socket.on('delete-document', (data) => {
     const res = Documents.deleteDocument(data);
+    socket.emit("serverResponse",res);
   });
 
   socket.on('send-changes', (delta) => {

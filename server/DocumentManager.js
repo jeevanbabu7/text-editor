@@ -54,7 +54,7 @@ class DocumentManager {
 
     deleteDocument(data) {
         const deleteDoc = async (data) => {
-            const response = await fetch(`http://localhost:3001/api/${data.id}`, {
+            const response = await fetch(`http://localhost:3001/api/document/delete/${data.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

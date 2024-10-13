@@ -3,7 +3,7 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import { io } from 'socket.io-client';
 import useStore from '../../zustand/store.js';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -25,7 +25,7 @@ const TextEditor = () => {
   const [docData, setDocData] = useState({});
   const params = useParams();
   const userId = userData._id;
-
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const title = docData.title;
@@ -36,11 +36,19 @@ const TextEditor = () => {
     const data = {title, description, content, id, userId};
     
     socket.emit('update-document', data);
-    
+
     const res = await response.json();
     console.log(res);
   };
 
+  const handleDelete = async () => {
+    const id = params.id;
+    const email = userData.email;
+    const data = {id, email};
+    socket.emit('delete-document', data);
+    navigate('/home');
+    
+  }
   // Set up socket connection
   useEffect(() => {
     const s = io('http://localhost:3001'); // Connect to backend server
@@ -124,16 +132,24 @@ useEffect(() => {
   
   return (
     <div className="flex flex-col items-center mt-5">
-      {/* Title and Description */}
-      <div className='w-full max-w-4xl mb-5 flex flex-row justify-center items-center'>
-        <div className="w-full max-w-4xl mb-5">
-          <h1 className="text-4xl font-bold text-slate-800">{docData.title || "Untitled Document"}</h1>
-          <p className="text-xl text-slate-600">{docData.description || "No description available."}</p>
-        </div>
-        <button onClick={handleSave} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <div className='w-full max-w-4xl mb-5 flex flex-row justify-between items-center'>
+
+      <div className="w-full">
+        <h1 className="text-4xl font-bold text-slate-800">{docData.title || "Untitled Document"}</h1>
+        <p className="text-xl text-slate-600">{docData.description || "No description available."}</p>
+      </div>
+
+      {/* Buttons */}
+      <div className='flex flex-row gap-4 items-center'>
+        <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Save
         </button>
+        <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+          Delete
+        </button>
       </div>
+    </div>
+
 
       {/* Quill Editor */}
       <div className="w-full max-w-4xl border border-slate-50 text-slate-800 text-2xl shadow-lg rounded-lg bg-white" ref={wrapperRef}></div>
