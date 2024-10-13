@@ -14,6 +14,7 @@ const Landing = () => {
 
     const handleSignUp = () => {
         navigate('/signup'); // Navigate to your signup page
+        
     };
 
     return (
