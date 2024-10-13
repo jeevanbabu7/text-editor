@@ -82,7 +82,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3001/api/document/get/${userData._id}`);
+      const response = await fetch(`/api/document/get/${userData._id}`);
       const data = await response.json();
       console.log(data);
       

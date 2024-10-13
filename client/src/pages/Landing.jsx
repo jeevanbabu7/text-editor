@@ -16,7 +16,7 @@ const Landing = () => {
     
           const result = await signInWithPopup(auth, provider);
     
-          const res = await fetch('http://localhost:3001/api/auth/google-login', {
+          const res = await fetch('/api/auth/google-login', {
             method: 'POST',
             headers: {
               "Content-Type": 'application/json',

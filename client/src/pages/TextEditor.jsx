@@ -127,7 +127,7 @@ useEffect(() => {
   useEffect(() => { 
     if(!socket) return;
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3001/api/document/getDocument/${params.id}`);
+      const response = await fetch(`/api/document/getDocument/${params.id}`);
       const data = await response.json();
       setDocData(data); // Set document data
       console.log(data);
@@ -148,7 +148,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCollaborators = async () => {
-    const response = await fetch(`http://localhost:3001/api/document/getCollaborators/${params.id}`);
+    const response = await fetch(`/api/document/getCollaborators/${params.id}`);
     const data = await response.json();
     setCollaborators(data);
   }
