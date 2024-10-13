@@ -37,7 +37,7 @@ const Home = () => {
   const [socket, setSocket] = React.useState();
   
   useEffect(() => {
-    const s = io('http://localhost:3001'); // Connect to backend server
+    const s = io('https://text-editor-server-sage.vercel.app'); // Connect to backend server
     setSocket(s);
 
     return () => {

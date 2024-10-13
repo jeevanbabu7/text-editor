@@ -18,7 +18,7 @@ class DocumentManager {
                 collaborators: data.collaborators
             };
     
-            const response = await fetch('http://localhost:3001/api/document/create', {
+            const response = await fetch('https://text-editor-server-sage.vercel.app/api/document/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ class DocumentManager {
 
     updateDocument(data) {
         const updateDoc = async (data) => {
-            const response = await fetch('http://localhost:3001/api/document/update', {
+            const response = await fetch('https://text-editor-server-sage.vercel.app/api/document/update', {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ class DocumentManager {
 
     deleteDocument(data) {
         const deleteDoc = async (data) => {
-            const response = await fetch(`http://localhost:3001/api/document/delete/${data.id}`, {
+            const response = await fetch(`https://text-editor-server-sage.vercel.app/api/document/delete/${data.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ class DocumentManager {
 
     addCollaborator(data) {
         const addCollab = async (data) => {
-            const response = await fetch('http://localhost:3001/api/document/addCollaborator', {
+            const response = await fetch('https://text-editor-server-sage.vercel.app/api/document/addCollaborator', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
