@@ -9,12 +9,11 @@ const Landing = () => {
   
 
     const handleLogin = () => {
-        navigate('/login'); // Navigate to your login page
+        navigate('/login'); 
     };
 
     const handleSignUp = () => {
-        navigate('/signup'); // Navigate to your signup page
-        
+        navigate('/signup'); 
     };
 
     return (
