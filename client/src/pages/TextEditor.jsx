@@ -180,9 +180,26 @@ useEffect(() => {
 }, []);
   
   return (
+    <>
+ <nav className="bg-gray-600 p-4">
+    <div className="container mx-auto flex justify-between items-center">
+      <a href="/home" className="text-white text-xl font-semibold flex items-center gap-2">
+        {/* Left Arrow Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          className="w-6 h-6 text-white"  // Ensure visibility
+        >
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z" />
+        </svg>
+        Home
+      </a>
+    </div>
+  </nav>
     <div className="grid grid-cols-1 md:grid-cols-5 gap-1">
   {/* Editor Section */}
-  <div className="col-span-4  p-2 overflow-auto">
+  <div className="col-span-4 overflow-auto">
     <div className="flex flex-col items-center mt-5">
       <div className="w-full max-w-4xl mb-5 flex flex-row justify-between items-center">
         <div className="w-full">
@@ -248,6 +265,7 @@ useEffect(() => {
     </div>
   </div>
 </div>
+    </>
 
   
   );
