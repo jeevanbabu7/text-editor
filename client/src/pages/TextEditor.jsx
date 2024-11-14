@@ -38,7 +38,7 @@ const TextEditor = () => {
     const userId = userData._id;
     const data = {title, description, content, id, userId};
     
-    const response = await fetch('http://localhost:3001/api/document/update', {
+    const response = await fetch('https://text-editor-45mp.onrender.com/api/document/update', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const TextEditor = () => {
     const email = userData.email;
     const data = {id, email};
 
-    const response = await fetch(`http://localhost:3001/api/document/delete/${data.id}`, {
+    const response = await fetch(`https://text-editor-45mp.onrender.com/api/document/delete/${data.id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ const TextEditor = () => {
     const documentId = params.id;
     const userEmail = userData.email;
     const data = {documentId, collaboratorEmail, userEmail};
-    const response = await fetch('http://localhost:3001/api/document/addCollaborator', {
+    const response = await fetch('https://text-editor-45mp.onrender.com/api/document/addCollaborator', {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ const TextEditor = () => {
 
   // Set up socket connection
   useEffect(() => {
-    const s = io('http://localhost:3001'); // Connect to backend server
+    const s = io('https://text-editor-45mp.onrender.com'); // Connect to backend server
     setSocket(s);
 
     return () => {
@@ -150,7 +150,7 @@ useEffect(() => {
   useEffect(() => { 
     if(!socket) return;
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3001/api/document/getDocument/${params.id}`);
+      const response = await fetch(`https://text-editor-45mp.onrender.com/api/document/getDocument/${params.id}`);
       const data = await response.json();
       setDocData(data); // Set document data
       console.log(data);
@@ -171,7 +171,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCollaborators = async () => {
-    const response = await fetch(`http://localhost:3001/api/document/getCollaborators/${params.id}`);
+    const response = await fetch(`https://text-editor-45mp.onrender.com/api/document/getCollaborators/${params.id}`);
     const data = await response.json();
     setCollaborators(data);
   }

@@ -16,25 +16,30 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-
-        const response = await fetch("https://text-editor-backend-4e72lalvf-jeevanbabu7s-projects.vercel.app/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-            });
-            const data = await response.json();
-            setUserData(data);
-        navigate('/home');
-            
-    }catch(err) {
+      const response = await fetch("https://text-editor-45mp.onrender.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+  
+      const data = await response.json();
+      console.log("Received user data:", data); // Log data to verify it
+      if (data) {
+        setUserData(data);
+        navigate("/home");
+      } else {
+        console.error("No user data returned");
+      }
+  
+    } catch (err) {
       console.log(err.message);
     }
-    
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">

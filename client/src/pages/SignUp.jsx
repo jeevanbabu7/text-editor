@@ -22,7 +22,7 @@ const SignUpForm = () => {
     }
     
     try {
-      const res = await fetch("https://text-editor-backend-9tdxgdse5-jeevanbabu7s-projects.vercel.app/api/auth/signup", {
+      const res = await fetch("https://text-editor-45mp.onrender.com/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
