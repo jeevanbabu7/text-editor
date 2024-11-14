@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Type definition for userData (optional if using TypeScript)
 
 const useStore = create(
   persist(
