@@ -25,6 +25,7 @@ app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Restricts embedded content to same-origin or CORS
   next();
 });
+app.options('*', cors()); // Enable CORS for all preflight (OPTIONS) requests
 
 // app.use(cookieParser()) 
 
