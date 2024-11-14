@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-  const nagivate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -21,17 +21,22 @@ const SignUpForm = () => {
       return;
     }
     
-    const res = await fetch("https://text-editor-server-sage.vercel.app/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({username: formData.fullName, email: formData.email, password: formData.password}),
-    });
-    
-    const data = await res.json();
-
-    navigate('/login');
+    try {
+      const res = await fetch("https://text-editor-backend-9tdxgdse5-jeevanbabu7s-projects.vercel.app/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username: formData.fullName, email: formData.email, password: formData.password}),
+      });
+      
+      const data = await res.json();
+  
+      navigate('/login');
+    }
+    catch(err) {
+      console.log(err.message); 
+    }
     
   };
 

@@ -37,7 +37,7 @@ const Home = () => {
   const [socket, setSocket] = React.useState();
   
   useEffect(() => {
-    const s = io('https://text-editor-server-sage.vercel.app'); // Connect to backend server
+    const s = io('http://localhost:3001'); // Connect to backend server
     setSocket(s);
 
     return () => {
@@ -54,15 +54,31 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    socket.emit('new-document', {
-      title: title,
-      description: description,
-      creator: email,
-      content: {
-        msg: 'Welcome to the collaborative text editor!'
-      },
-      collaborators: [userData._id],
-    });
+
+    try {
+      const newDocument = {
+          title: title,
+          description: description,
+          creator: email,
+          lastUpdated: new Date().toISOString(),
+          content: {
+             msg: 'Welcome to the collaborative text editor!'
+          },
+          collaborators: [userData._id]
+      };
+        const response = await fetch('http://localhost:3001/api/document/create', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newDocument)
+      });
+
+      const document = await response.json(); 
+
+    }catch(err) {
+      console.log(err.message);
+    }
   };
 
   useEffect(() => {
@@ -82,7 +98,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/document/get/${userData._id}`);
+      const response = await fetch(`http://localhost:3001/api/document/get/${userData._id}`);
       const data = await response.json();
       console.log(data);
       

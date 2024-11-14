@@ -38,18 +38,33 @@ const TextEditor = () => {
     const userId = userData._id;
     const data = {title, description, content, id, userId};
     
-    socket.emit('update-document', data);
+    const response = await fetch('http://localhost:3001/api/document/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
 
-    const res = await response.json();
-    console.log(res);
+    const document = await response.json();
   };
 
   const handleDelete = async () => {
     const id = params.id;
     const email = userData.email;
     const data = {id, email};
-    socket.emit('delete-document', data);
+
+    const response = await fetch(`http://localhost:3001/api/document/delete/${data.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    const document = await response.json();
     navigate('/home');
+
     
   }
 
@@ -57,13 +72,21 @@ const TextEditor = () => {
     const documentId = params.id;
     const userEmail = userData.email;
     const data = {documentId, collaboratorEmail, userEmail};
-    socket.emit('add-collaborator', data);
+    const response = await fetch('http://localhost:3001/api/document/addCollaborator', {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    const document = await response.json();
     
   }
 
   // Set up socket connection
   useEffect(() => {
-    const s = io('https://text-editor-server-sage.vercel.app'); // Connect to backend server
+    const s = io('http://localhost:3001'); // Connect to backend server
     setSocket(s);
 
     return () => {
@@ -127,7 +150,7 @@ useEffect(() => {
   useEffect(() => { 
     if(!socket) return;
     const fetchData = async () => {
-      const response = await fetch(`/api/document/getDocument/${params.id}`);
+      const response = await fetch(`http://localhost:3001/api/document/getDocument/${params.id}`);
       const data = await response.json();
       setDocData(data); // Set document data
       console.log(data);
@@ -148,7 +171,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCollaborators = async () => {
-    const response = await fetch(`/api/document/getCollaborators/${params.id}`);
+    const response = await fetch(`http://localhost:3001/api/document/getCollaborators/${params.id}`);
     const data = await response.json();
     setCollaborators(data);
   }
