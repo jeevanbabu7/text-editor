@@ -1,81 +1,79 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import cors from 'cors'; // Import CORS
+import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import DocumentManager from './DocumentManager.js';
 import DocumentRouter from './Route/Document.route.js';
 import authRouter from './Route/AuthRouter.js';
-// import cookieParser from 'cookie-parser';
+
 dotenv.config();
 
-// app initialization
+// Initialize the app
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: 'https://text-editor-phi-ashen.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
 
+// Define allowed origins
+const allowedOrigins = ['https://text-editor-phi-ashen.vercel.app', 'http://localhost:5173'];
+
+// Configure CORS to allow specific origins
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://text-editor-phi-ashen.vercel.app');
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
-app.options('*', cors()); // Enable CORS for all preflight (OPTIONS) requests
+// Enable CORS for preflight (OPTIONS) requests
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
-// app.use(cookieParser()) 
-
+// Define routes
 app.use('/api/document/', DocumentRouter);
 app.use('/api/auth/', authRouter);
 
-
+// Set up Socket.io server with CORS configuration
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'https://text-editor-phi-ashen.vercel.app', 
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   }
 });
 
-// document Manager
-
+// Document manager instance
 const Documents = new DocumentManager();
 
 // Socket.io connection
-
 io.on('connection', (socket) => {
   console.log('A user connected');
 
   socket.on('new-document', async (data) => {
     const res = await Documents.createDocument(data);
-    socket.emit("serverResponse",res);
-
+    socket.emit("serverResponse", res);
   });
 
   socket.on('update-document', (data) => {
     const res = Documents.updateDocument(data);
-    socket.emit("serverResponse",res);
+    socket.emit("serverResponse", res);
   });
 
   socket.on('delete-document', (data) => {
     const res = Documents.deleteDocument(data);
-    socket.emit("serverResponse",res);
+    socket.emit("serverResponse", res);
   });
-
-  // socket.on('send-changes', (delta) => {
-  //   socket.broadcast.emit('receive-changes', delta);
-  //   console.log('Received delta:', delta);
-  // });
 
   socket.on('add-collaborator', (data) => {
     const res = Documents.addCollaborator(data);
-    socket.emit("serverResponse",res);
+    socket.emit("serverResponse", res);
   });
 
   socket.on('join-document', (docId) => {
@@ -86,13 +84,13 @@ io.on('connection', (socket) => {
   socket.on('send-changes', (docId, delta) => {
     socket.to(docId).emit('receive-changes', delta);
   });
+
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 });
 
-
-//------------------------------
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -100,9 +98,8 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-//-----------------------------------
-
+// Start the server
 const port = process.env.PORT || 3001;
 server.listen(port, () => {
-  console.log('Server is running on port 3001');
+  console.log(`Server is running on port ${port}`);
 });
