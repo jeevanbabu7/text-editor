@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://text-editor-server-sage.vercel.app',
+        target: 'https://localhost:3001',
         secure: false,
       },
     },

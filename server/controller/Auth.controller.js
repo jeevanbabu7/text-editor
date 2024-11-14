@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
   
 export const signup = async (req,res) =>{
+  console.log("signup working....");
     try {
       
       const { username, email, password } = req.body;
@@ -44,6 +45,9 @@ export const login = async (req,res) => {
       if(!validPassword) {
         return res.status(400).json("Wrong password");
       }
+
+      console.log("mmmmmmmmmmmmmmmmmmm");
+      
 
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = user._doc;
