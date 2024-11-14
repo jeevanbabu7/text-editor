@@ -107,7 +107,7 @@ const Home = () => {
       setProjects(data);
     }
 
-    // fetchData();
+    fetchData();
   }, []);
 
   // Animation for modal (scale-in when opened)
