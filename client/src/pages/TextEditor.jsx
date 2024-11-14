@@ -180,9 +180,9 @@ useEffect(() => {
 }, []);
   
   return (
-    <div className="h-screen grid grid-cols-1 md:grid-cols-5 gap-1">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-1">
   {/* Editor Section */}
-  <div className="col-span-4">
+  <div className="col-span-4  p-2 overflow-auto">
     <div className="flex flex-col items-center mt-5">
       <div className="w-full max-w-4xl mb-5 flex flex-row justify-between items-center">
         <div className="w-full">
@@ -205,15 +205,15 @@ useEffect(() => {
 
       {/* Quill Editor */}
       <div
-        className="w-full max-w-4xl border border-slate-50 text-slate-800 text-1xl shadow-lg rounded-lg bg-white"
-        style={{ height: "400px" }} // Set the desired height
+        className="w-full h-screen max-w-4xl border border-slate-50 text-slate-800 text-1xl shadow-lg rounded-lg bg-white overflow-auto"
+        // style={{ height: "400px" }} // Set the desired height
         ref={wrapperRef}
       ></div>
     </div>
   </div>
 
   {/* Collaborators Section */}
-  <div className="col-span-1 md:col-span-1 bg-slate-300 flex flex-col gap-5 p-4 md:mt-0 mt-5">
+  <div className="h-screen col-span-1 md:col-span-1 bg-slate-300 flex flex-col gap-5 p-4 md:mt-0 mt-5">
     <div className="max-w-sm">
       <label htmlFor="input-label" className="block text-sm font-medium mb-2">Add collaborators</label>
       <input
@@ -232,7 +232,7 @@ useEffect(() => {
     </button>
 
     <div className="p-4">
-      <h1 className="text-3xl text-black font-semibold mb-4">Collaborators</h1>
+      <h1 className="text-2xl text-black font-semibold mb-4">Collaborators</h1>
       <ul className="space-y-2">
         {collaborators.length > 0 && collaborators.map((collaborator) => {
           return (
@@ -240,7 +240,7 @@ useEffect(() => {
               key={collaborator._id} // Add a unique key for each list item
               className="flex items-center p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-300"
             >
-              <span className="text-slate-900 text-xl">{collaborator.username}</span>
+              <span className="text-slate-900 text-sm">{collaborator.username}</span>
             </li>
           );
         })}

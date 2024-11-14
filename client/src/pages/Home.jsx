@@ -9,11 +9,11 @@ import io from 'socket.io-client';
 
 const style = {
   position: "absolute",
-  top: "70%",
+  top: "90px",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
-  height: 400,
+  width: "90%",
+  height: "300px",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -123,7 +123,7 @@ const Home = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-5">
       <header className="mb-8 text-center">
         <h1 className="text-4xl font-bold text-gray-800">Text Editor Projects</h1>
         <p className="text-gray-600 mt-2">Explore your collaborative projects</p>
@@ -154,8 +154,8 @@ const Home = () => {
               sx={{
                 ...style,
                 display: "flex",
-                flexDirection: "row",
-                gap: 2,
+                flexDirection: "column",
+                gap: 5,
                 alignItems: "center",
                 marginTop: "20%",
               }}
