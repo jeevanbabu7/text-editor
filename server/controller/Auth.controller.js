@@ -19,9 +19,9 @@ export const signup = async (req,res) =>{
         })
   
         await newUser.save();
-        res.status(200).json(newUser);
+        return res.status(200).json(newUser);
       } else {
-        res.status(400).json("User already exists");
+        return res.status(400).json("User already exists");
       }
 
     }catch(err) {

@@ -37,7 +37,7 @@ const Home = () => {
   const [socket, setSocket] = React.useState();
   
   useEffect(() => {
-    const s = io('http://localhost:3001'); // Connect to backend server
+    const s = io('https://text-editor-45mp.onrender.com'); // Connect to backend server
     setSocket(s);
 
     return () => {
@@ -66,7 +66,7 @@ const Home = () => {
           },
           collaborators: [userData._id]
       };
-        const response = await fetch('http://localhost:3001/api/document/create', {
+        const response = await fetch('https://text-editor-45mp.onrender.com/api/document/create', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -97,15 +97,17 @@ const Home = () => {
   }, [socket]);
 
   useEffect(() => {
+    console.log(userData);
+    
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3001/api/document/get/${userData._id}`);
+      const response = await fetch(`https://text-editor-45mp.onrender.com/api/document/get/${userData._id}`);
       const data = await response.json();
       console.log(data);
       
       setProjects(data);
     }
 
-    fetchData();
+    // fetchData();
   }, []);
 
   // Animation for modal (scale-in when opened)
