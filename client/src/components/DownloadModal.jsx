@@ -22,7 +22,7 @@ const DownloadModal = ({setVisible}) => {
         });
       
         Packer.toBlob(doc).then((blob) => {
-          saveAs(blob, `${filename == "" ? "document" : filename}.pdf`);
+          saveAs(blob, `${filename == "" ? "document" : filename}.docx`);
         });
       };
 
