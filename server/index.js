@@ -79,6 +79,7 @@ io.on('connection', (socket) => {
   socket.on('join-document', (docId) => {
     socket.join(docId);
     console.log(`User ${socket.id} joined document ${docId}`);
+    
   });
 
   socket.on('send-changes', (docId, delta) => {

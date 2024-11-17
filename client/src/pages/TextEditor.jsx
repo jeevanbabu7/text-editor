@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 import useStore from '../../zustand/store.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Textarea } from "@material-tailwind/react";
- 
+import DownloadModal from '../components/DownloadModal.jsx';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -29,6 +29,7 @@ const TextEditor = () => {
   const [collaboratorEmail, setCollaboratorEmail] = useState('');
   const [collaborators, setCollaborators] = useState([]);
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   const handleSave = async () => {
     const title = docData.title;
@@ -181,6 +182,10 @@ useEffect(() => {
   
   return (
     <>
+        {visible && <DownloadModal 
+                        setVisible={setVisible}
+                      />}
+
  <nav className="bg-gray-600 p-4">
     <div className="container mx-auto flex justify-between items-center">
       <a href="/home" className="text-white text-xl font-semibold flex items-center gap-2">
@@ -216,7 +221,11 @@ useEffect(() => {
             <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Delete
             </button>
+            
           )}
+
+          <button onClick={() => setVisible(true)} className='bg-slate-500 text-white font-bold  px-4 py-2 rounded'>Download</button>
+          
         </div>
       </div>
 
