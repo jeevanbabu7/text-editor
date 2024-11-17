@@ -70,7 +70,7 @@ const DownloadModal = ({setVisible}) => {
 
                     <div className="sm:flex sm:items-start">
                         <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-light-400 sm:mx-0 sm:size-10">
-                            <svg className="size-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                            <svg className="animate-bounce size-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l3-3m-3 3l-3-3M4.5 19.5h15" />
                             </svg>
                             </div>

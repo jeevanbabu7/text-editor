@@ -4,8 +4,8 @@ import 'quill/dist/quill.snow.css';
 import { io } from 'socket.io-client';
 import useStore from '../../zustand/store.js';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Textarea } from "@material-tailwind/react";
 import DownloadModal from '../components/DownloadModal.jsx';
+import Spinner from '../components/Spinner.jsx';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -30,6 +30,7 @@ const TextEditor = () => {
   const [collaborators, setCollaborators] = useState([]);
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
+  const [Loading, setLoading] = useState(true);
 
   const handleSave = async () => {
     const title = docData.title;
@@ -155,6 +156,7 @@ useEffect(() => {
       const data = await response.json();
       setDocData(data); // Set document data
       console.log(data);
+      setLoading(false);
     }
 
     fetchData();
@@ -185,8 +187,9 @@ useEffect(() => {
         {visible && <DownloadModal 
                         setVisible={setVisible}
                       />}
+        {Loading && (<Spinner />)}
 
- <nav className="bg-gray-600 p-4">
+ <nav className="bg-gray-800 p-4">
     <div className="container mx-auto flex justify-between items-center">
       <a href="/home" className="text-white text-xl font-semibold flex items-center gap-2">
         {/* Left Arrow Icon */}
@@ -239,9 +242,9 @@ useEffect(() => {
   </div>
 
   {/* Collaborators Section */}
-  <div className="h-screen col-span-1 md:col-span-1 bg-slate-300 flex flex-col gap-5 p-4 md:mt-0 mt-5">
+  <div className="h-screen col-span-1 md:col-span-1 bg-gray-700 flex flex-col gap-5 p-4 md:mt-0 mt-5">
     <div className="max-w-sm">
-      <label htmlFor="input-label" className="block text-sm font-medium mb-2">Add collaborators</label>
+      <label htmlFor="input-label" className="block text-sm font-medium mb-2 text-white">Add collaborators</label>
       <input
         onChange={(event) => {
           setCollaboratorEmail(event.target.value);
@@ -258,7 +261,7 @@ useEffect(() => {
     </button>
 
     <div className="p-4">
-      <h1 className="text-2xl text-black font-semibold mb-4">Collaborators</h1>
+      <h1 className="text-2xl text-white font-semibold mb-4">Collaborators</h1>
       <ul className="space-y-2">
         {collaborators.length > 0 && collaborators.map((collaborator) => {
           return (

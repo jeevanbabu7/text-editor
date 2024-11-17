@@ -6,6 +6,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { useTrail, animated as a } from "@react-spring/web";
 import useStore  from "../../zustand/store.js";  
 import io from 'socket.io-client';
+import Spinner from "../components/Spinner.jsx";
 
 const style = {
   position: "absolute",
@@ -35,7 +36,9 @@ const Home = () => {
   const [description, setDescription] = React.useState("");
   const navigate = useNavigate();
   const [socket, setSocket] = React.useState();
+  const [Loading, setLoading] = React.useState(true);
   
+
   useEffect(() => {
     const s = io('https://text-editor-45mp.onrender.com'); // Connect to backend server
     setSocket(s);
@@ -103,8 +106,8 @@ const Home = () => {
       const response = await fetch(`https://text-editor-45mp.onrender.com/api/document/get/${userData._id}`);
       const data = await response.json();
       console.log(data);
-      
       setProjects(data);
+      setLoading(false);
     }
 
     fetchData();
@@ -124,6 +127,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
+      {Loading && <Spinner />}
       <header className="mb-8 text-center">
         <h1 className="text-4xl font-bold text-gray-800">Text Editor Projects</h1>
         <p className="text-gray-600 mt-2">Explore your collaborative projects</p>
